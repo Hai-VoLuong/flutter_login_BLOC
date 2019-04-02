@@ -4,7 +4,7 @@ class LoadingDialog {
   static void showLoadingDialog(BuildContext context, String msg) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (context) => new Dialog(
         child: Container(
           color: Colors.white,
@@ -14,7 +14,7 @@ class LoadingDialog {
             children: <Widget>[
               CircularProgressIndicator(),
               Padding(
-                padding: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
                   msg,
                   style: TextStyle(fontSize: 18),

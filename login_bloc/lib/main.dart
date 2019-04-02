@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:login_bloc/bloc/counter_bloc.dart';
+import 'package:login_bloc/helper/dialog/loading_dialog.dart';
+import 'package:login_bloc/helper/dialog/msg_dialog.dart';
 
 void main() => runApp(MyApp());
 
@@ -53,6 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          //MsgDialog.showMsgDialog(context, 'hello', 'what');
+          LoadingDialog.showLoadingDialog(context, 'loading...');
           _counterBloc.increment();
         },
         tooltip: 'Increment',
