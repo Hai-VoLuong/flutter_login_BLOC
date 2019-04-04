@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:login_bloc/theme.dart';
 
-class CollasingListTitle extends StatefulWidget {
+class NavigationDrawerCell extends StatefulWidget {
   final String title;
   final IconData icon;
   final AnimationController animationController;
   final bool isSelected;
   final Function onTap;
 
-  CollasingListTitle(
+  NavigationDrawerCell(
       {@required this.title,
       @required this.icon,
       @required this.animationController,
@@ -16,10 +16,10 @@ class CollasingListTitle extends StatefulWidget {
       this.onTap});
 
   @override
-  _CollasingListTitleState createState() => _CollasingListTitleState();
+  _NavigationDrawerCellState createState() => _NavigationDrawerCellState();
 }
 
-class _CollasingListTitleState extends State<CollasingListTitle> {
+class _NavigationDrawerCellState extends State<NavigationDrawerCell> {
   Animation<double> widthAnimation, sizeBoxAnimation;
 
   @override
@@ -30,6 +30,22 @@ class _CollasingListTitleState extends State<CollasingListTitle> {
     sizeBoxAnimation =
         Tween<double>(begin: 10, end: 0).animate(widget.animationController);
   }
+
+  Widget createRow() => Row(
+    children: <Widget>[
+      Icon(
+        widget.icon, 
+        color: widget.isSelected 
+          ? selectedColor 
+          : Colors.white30, 
+          size: 38
+      ),
+      SizedBox(width: sizeBoxAnimation.value),
+      (widthAnimation.value >= 220)
+        ? Text(widget.title, style: widget.isSelected ? listTitleSelectedTextStyle : listTitleDefaultTextStyle)
+        : Container(),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +59,7 @@ class _CollasingListTitleState extends State<CollasingListTitle> {
         width: widthAnimation.value,
         margin: EdgeInsets.symmetric(horizontal: 8),
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        child: Row(
-          children: <Widget>[
-            Icon(widget.icon, color: widget.isSelected ? selectedColor : Colors.white30, size: 38),
-            SizedBox(width: sizeBoxAnimation.value),
-            (widthAnimation.value >= 220)
-                ? Text(widget.title, style: widget.isSelected ?  listTitleSelectedTextStyle : listTitleDefaultTextStyle)
-                : Container(),
-          ],
-        ),
+        child: createRow(),
       ),
     );
   }
