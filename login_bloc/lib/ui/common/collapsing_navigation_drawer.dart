@@ -9,16 +9,34 @@ class CollapsingNavigationDrawer extends StatefulWidget {
       _CollapsingNavigationDrawerState();
 }
 
-class _CollapsingNavigationDrawerState
-    extends State<CollapsingNavigationDrawer> {
+class _CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
+    with SingleTickerProviderStateMixin {
   double maxWidth = 250;
-  double minWidth = 70;
+  double minWidth = 60;
   bool isCollapsed = false;
+  AnimationController _animationController;
+  Animation<double> widthAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 300));
+    widthAnimation = Tween<double>(begin: maxWidth, end: minWidth)
+        .animate(_animationController);
+  }
 
   @override
   Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, widget) => getWidget(context, widget),
+    );
+  }
+
+  Widget getWidget(context, widget) {
     return Container(
-      width: 250,
+      width: widthAnimation.value,
       color: drawerBackgroundColor,
       child: Column(
         children: <Widget>[
@@ -26,6 +44,7 @@ class _CollapsingNavigationDrawerState
           CollasingListTitle(
             title: 'Sarah Pulson',
             icon: Icons.person,
+            animationController: _animationController,
           ),
           Expanded(
             child: ListView.builder(
@@ -34,6 +53,7 @@ class _CollapsingNavigationDrawerState
                 return CollasingListTitle(
                   title: navigationModels[counter].title,
                   icon: navigationModels[counter].icon,
+                  animationController: _animationController,
                 );
               },
             ),
@@ -42,9 +62,17 @@ class _CollapsingNavigationDrawerState
             onTap: () {
               setState(() {
                 isCollapsed = !isCollapsed;
+                isCollapsed
+                    ? _animationController.forward()
+                    : _animationController.reverse();
               });
             },
-            child: Icon(Icons.chevron_left, color: Colors.white, size: 50),
+            child: AnimatedIcon(
+              icon: AnimatedIcons.arrow_menu,
+              progress: _animationController,
+              color: Colors.white, 
+              size: 50
+            ),
           ),
           SizedBox(height: 50),
         ],
