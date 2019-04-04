@@ -11,8 +11,8 @@ class CollapsingNavigationDrawer extends StatefulWidget {
 
 class _CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     with SingleTickerProviderStateMixin {
-  double maxWidth = 250;
-  double minWidth = 60;
+  double maxWidth = 220;
+  double minWidth = 70;
   bool isCollapsed = false;
   AnimationController _animationController;
   Animation<double> widthAnimation;
@@ -40,14 +40,17 @@ class _CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
       color: drawerBackgroundColor,
       child: Column(
         children: <Widget>[
-          SizedBox(height: 50),
           CollasingListTitle(
             title: 'Sarah Pulson',
             icon: Icons.person,
             animationController: _animationController,
           ),
+          Divider(color: Colors.grey, height: 40),
           Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
+              separatorBuilder: (context, counter) {
+                return Divider(height: 12);
+              },
               itemCount: navigationModels.length,
               itemBuilder: (context, counter) {
                 return CollasingListTitle(

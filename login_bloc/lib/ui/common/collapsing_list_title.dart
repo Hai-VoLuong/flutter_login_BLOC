@@ -23,7 +23,7 @@ class _CollasingListTitleState extends State<CollasingListTitle> {
   void initState() {
     super.initState();
     widthAnimation =
-        Tween<double>(begin: 250, end: 60).animate(widget.animationController);
+        Tween<double>(begin: 220, end: 70).animate(widget.animationController);
     sizeBoxAnimation =
         Tween<double>(begin: 10, end: 0).animate(widget.animationController);
   }
@@ -32,7 +32,8 @@ class _CollasingListTitleState extends State<CollasingListTitle> {
   Widget build(BuildContext context) {
     return Container(
       width: widthAnimation.value,
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: Row(
         children: <Widget>[
           Icon(widget.icon, color: Colors.white30, size: 38),
