@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_bloc/bloc/theme_bloc.dart';
+import 'package:login_bloc/ui/common/collapsing_navigation_drawer.dart';
 
 class HomePage extends StatelessWidget {
   final ThemeBloc _themeBloc;
@@ -37,7 +38,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Dynamic Theme"),
       ),
-      drawer: createDrawer(),
+      drawer: CollapsingNavigationDrawer(),
       body: Center(
         child: Text("Hello World"),
       ),
