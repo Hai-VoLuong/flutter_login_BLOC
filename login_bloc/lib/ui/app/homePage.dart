@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
       //drawer: CollapsingNavigationDrawer(),
       body: Stack(
         children: <Widget>[
-          Container(color: Colors.red),
+          Container(color: Colors.lightBlue[300]),
           CollapsingNavigationDrawer()
         ],
       ),

@@ -16,12 +16,13 @@ class _CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
   bool isCollapsed = false;
   AnimationController _animationController;
   Animation<double> widthAnimation;
+  int currentSelectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 300));
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     widthAnimation = Tween<double>(begin: maxWidth, end: minWidth)
         .animate(_animationController);
   }
@@ -35,50 +36,58 @@ class _CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
   }
 
   Widget getWidget(context, widget) {
-    return Container(
-      width: widthAnimation.value,
-      color: drawerBackgroundColor,
-      child: Column(
-        children: <Widget>[
-          CollasingListTitle(
-            title: 'Sarah Pulson',
-            icon: Icons.person,
-            animationController: _animationController,
-          ),
-          Divider(color: Colors.grey, height: 40),
-          Expanded(
-            child: ListView.separated(
-              separatorBuilder: (context, counter) {
-                return Divider(height: 12);
-              },
-              itemCount: navigationModels.length,
-              itemBuilder: (context, counter) {
-                return CollasingListTitle(
-                  title: navigationModels[counter].title,
-                  icon: navigationModels[counter].icon,
-                  animationController: _animationController,
-                );
-              },
+    return Material(
+      elevation: 80,
+      child: Container(
+        width: widthAnimation.value,
+        color: drawerBackgroundColor,
+        child: Column(
+          children: <Widget>[
+            CollasingListTitle(
+              title: 'Sarah Pulson',
+              icon: Icons.person,
+              animationController: _animationController,
             ),
-          ),
-          InkWell(
-            onTap: () {
-              setState(() {
-                isCollapsed = !isCollapsed;
-                isCollapsed
-                    ? _animationController.forward()
-                    : _animationController.reverse();
-              });
-            },
-            child: AnimatedIcon(
-              icon: AnimatedIcons.arrow_menu,
-              progress: _animationController,
-              color: Colors.white, 
-              size: 50
+            Divider(color: Colors.grey, height: 40),
+            Expanded(
+              child: ListView.separated(
+                separatorBuilder: (context, counter) {
+                  return Divider(height: 12);
+                },
+                itemCount: navigationModels.length,
+                itemBuilder: (context, counter) {
+                  return CollasingListTitle(
+                    onTap: () {
+                      setState(() {
+                        currentSelectedIndex = counter;
+                      });
+                    },
+                    isSelected: currentSelectedIndex == counter,
+                    title: navigationModels[counter].title,
+                    icon: navigationModels[counter].icon,
+                    animationController: _animationController,
+                  );
+                },
+              ),
             ),
-          ),
-          SizedBox(height: 50),
-        ],
+            InkWell(
+              onTap: () {
+                setState(() {
+                  isCollapsed = !isCollapsed;
+                  isCollapsed
+                      ? _animationController.forward()
+                      : _animationController.reverse();
+                });
+              },
+              child: AnimatedIcon(
+                  icon: AnimatedIcons.arrow_menu,
+                  progress: _animationController,
+                  color: Colors.white,
+                  size: 50),
+            ),
+            SizedBox(height: 50),
+          ],
+        ),
       ),
     );
   }
